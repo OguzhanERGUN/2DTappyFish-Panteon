@@ -10,6 +10,7 @@ public class FishController : MonoBehaviour
     int angle;
     int maxAngle = 20;
     int minAngle = -60;
+    public Score score;
     // Start is called before the first frame update
     void Start()
     {
@@ -38,5 +39,13 @@ public class FishController : MonoBehaviour
             }
         }
         transform.rotation = Quaternion.Euler(0, 0, angle);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Obstacle"))
+        {
+            score.Scored();
+        }
     }
 }

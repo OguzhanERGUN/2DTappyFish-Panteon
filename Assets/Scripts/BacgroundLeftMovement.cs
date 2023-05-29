@@ -40,7 +40,10 @@ public class BacgroundLeftMovement : MonoBehaviour
         }
         else if (gameObject.CompareTag("Obstacle"))
         {
-
+            if (transform.position.x <= GameManager.bottomLeft.x - obstacleWidth)
+            {
+                Destroy(gameObject);
+            }
         }
         
     }
