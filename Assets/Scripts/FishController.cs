@@ -6,39 +6,64 @@ public class FishController : MonoBehaviour
 {
 
     private Rigidbody2D rbFish;
-    [SerializeField]private float speed;
+    [SerializeField] private float speed;
     int angle;
     int maxAngle = 20;
     int minAngle = -60;
     public Score score;
+    public GameManager gameManager;
+    public Sprite deadFish;
+    private SpriteRenderer sp;
+    private Animator animatorFish;
     // Start is called before the first frame update
     void Start()
     {
         rbFish = GetComponent<Rigidbody2D>();
+        sp = GetComponent<SpriteRenderer>();
+        animatorFish = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        FishSwim();
+    }
+
+    private void FixedUpdate()
+    {
+        FishRotation();
+
+    }
+
+    private void FishSwim()
+    {
+        if (Input.GetMouseButtonDown(0) && GameManager.IsgameOver == false)
         {
             rbFish.velocity = new Vector2(rbFish.velocity.x, speed);
         }
-        if (rbFish.velocity.y >= 0)
+    }
+    private void FishRotation()
+    {
+        if (GameManager.IsgameOver == false)
         {
-            if (angle <= maxAngle)
+
+
+            if (rbFish.velocity.y >= 0)
             {
-                angle = angle + 4;
+                if (angle <= maxAngle)
+                {
+                    angle = angle + 4;
+                }
             }
-        }
-        else if (rbFish.velocity.y < -2.5f)
-        {
-            if (angle >= minAngle)
+            else if (rbFish.velocity.y < -2.5f)
             {
-                angle = angle - 2;
+                if (angle >= minAngle)
+                {
+                    angle = angle - 2;
+                }
             }
+            transform.rotation = Quaternion.Euler(0, 0, angle);
         }
-        transform.rotation = Quaternion.Euler(0, 0, angle);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -47,5 +72,33 @@ public class FishController : MonoBehaviour
         {
             score.Scored();
         }
+        else if (collision.CompareTag("Column"))
+        {
+            //gameover
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            if (GameManager.IsgameOver == false)
+            {
+                gameManager.GameOver();
+                GameOver();
+            }
+            else
+            {
+                //gameover
+
+            }
+        }
+    }
+
+    void GameOver()
+    {
+        sp.sprite = deadFish;
+        animatorFish.enabled = false;
+        transform.rotation = Quaternion.Euler(0, 0, -90);
     }
 }

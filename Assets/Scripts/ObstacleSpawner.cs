@@ -21,20 +21,22 @@ public class ObstacleSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        timer += Time.deltaTime;
-
-        if (timer >= maxTime)
+        if (GameManager.IsgameOver == false)
         {
-            InstantiateObstacle();
-            timer = 0;
-        }
+            timer += Time.deltaTime;
 
+            if (timer >= maxTime)
+            {
+                InstantiateObstacle();
+                timer = 0;
+            }
+        }
     }
 
     private void InstantiateObstacle()
     {
         RandomY = Random.Range(minY, maxY);
-        Instantiate(obstacle,new Vector2(transform.position.x,RandomY), obstacle.transform.rotation);
+        Instantiate(obstacle, new Vector2(transform.position.x, RandomY), obstacle.transform.rotation);
     }
 
 }

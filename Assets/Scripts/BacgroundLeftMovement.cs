@@ -28,8 +28,10 @@ public class BacgroundLeftMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position =new Vector2(transform.position.x - speed * Time.deltaTime, transform.position.y);
-
+        if (GameManager.IsgameOver == false)
+        {   
+            transform.position = new Vector2(transform.position.x - speed * Time.deltaTime, transform.position.y);
+        }
 
         if (gameObject.CompareTag("Ground"))
         {
@@ -45,6 +47,8 @@ public class BacgroundLeftMovement : MonoBehaviour
                 Destroy(gameObject);
             }
         }
-        
+
+
+
     }
 }
