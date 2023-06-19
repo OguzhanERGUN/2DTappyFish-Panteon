@@ -9,15 +9,20 @@ public class GameManager : MonoBehaviour
     public static Vector2 bottomLeft;
     public static bool IsgameOver;
     public GameObject gameOverPanel;
-
+    public static bool IsgameStarted;
+    public GameObject getReadyImage;
     private void Awake()
     {
         bottomLeft = Camera.main.ScreenToWorldPoint(new Vector2(0, 0));
+        IsgameOver = false;
+
+
     }
     // Start is called before the first frame update
     void Start()
     {
-        IsgameOver = false;
+        IsgameStarted = false;
+
     }
 
     // Update is called once per frame
@@ -35,5 +40,12 @@ public class GameManager : MonoBehaviour
     public void RestartGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+
+    public void GameHasStarted()
+    {
+        IsgameStarted=true;
+        getReadyImage.SetActive(false);
     }
 }

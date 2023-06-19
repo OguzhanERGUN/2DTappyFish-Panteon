@@ -15,10 +15,12 @@ public class FishController : MonoBehaviour
     public Sprite deadFish;
     private SpriteRenderer sp;
     private Animator animatorFish;
+    public ObstacleSpawner obstacleSpawner;
     // Start is called before the first frame update
     void Start()
     {
         rbFish = GetComponent<Rigidbody2D>();
+        rbFish.gravityScale = 0f;
         sp = GetComponent<SpriteRenderer>();
         animatorFish = GetComponent<Animator>();
     }
@@ -39,9 +41,18 @@ public class FishController : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) && GameManager.IsgameOver == false)
         {
+            if (GameManager.IsgameStarted == false)
+            {
+                rbFish.gravityScale = 1f;
+                gameManager.GameHasStarted();
+            }
+
+
             rbFish.velocity = new Vector2(rbFish.velocity.x, speed);
         }
     }
+
+
     private void FishRotation()
     {
         if (GameManager.IsgameOver == false)
@@ -74,7 +85,7 @@ public class FishController : MonoBehaviour
         }
         else if (collision.CompareTag("Column"))
         {
-            //gameover
+            gameManager.GameOver();
         }
     }
 
@@ -89,7 +100,7 @@ public class FishController : MonoBehaviour
             }
             else
             {
-                //gameover
+               
 
             }
         }
